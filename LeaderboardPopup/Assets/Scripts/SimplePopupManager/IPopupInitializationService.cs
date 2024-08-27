@@ -5,7 +5,7 @@
 
 using Cysharp.Threading.Tasks;
 
-namespace Modules.SimplePopupManager.Services
+namespace SimplePopupManager
 {
     /// <summary>
     ///     An interface for initializing popups.

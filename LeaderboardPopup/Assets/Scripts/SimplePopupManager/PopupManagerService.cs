@@ -4,19 +4,32 @@
 //of Sophun Games LTD is strictly prohibited and could be subject to legal action.
 
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
+using Services;
+using Services.AssetProviders;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-namespace Modules.SimplePopupManager.Services
+namespace SimplePopupManager
 {
     /// <summary>
     ///     Manages popups, providing functionality for opening, closing, and loading popups.
     /// </summary>
     public class PopupManagerService : IPopupManagerService
     {
-        private readonly Dictionary<string, GameObject> m_Popups = new();
+        private readonly IInjectedPrefabsService _injectedPrefabsService;
+        private readonly IAssetProviderService _assetProviderService;
+
+        private readonly Dictionary<string, GameObject> _popups = new();
+
+        public PopupManagerService(
+            IInjectedPrefabsService injectedPrefabsService, 
+            IAssetProviderService assetProviderService)
+        {
+            _injectedPrefabsService = injectedPrefabsService;
+            _assetProviderService = assetProviderService;
+        }
 
         /// <summary>
         ///     Opens a popup by its name and initializes it with the given parameters.
@@ -26,7 +39,7 @@ namespace Modules.SimplePopupManager.Services
         /// <param name="param">The parameters to initialize the popup with.</param>
         public async void OpenPopup(string name, object param)
         {
-            if (m_Popups.ContainsKey(name))
+            if (_popups.ContainsKey(name))
             {
                 Debug.LogError($"Popup with name {name} is already shown");
                 return;
@@ -42,12 +55,13 @@ namespace Modules.SimplePopupManager.Services
         /// <param name="name">The name of the popup to close.</param>
         public void ClosePopup(string name)
         {
-            if (!m_Popups.ContainsKey(name))
+            if (!_popups.ContainsKey(name))
                 return;
 
-            GameObject popup = m_Popups[name];
+            var popup = _popups[name];
+            popup.GetComponent<IPopup>().OnCloseButtonClick -= ClosePopup;
             Addressables.ReleaseInstance(popup);
-            m_Popups.Remove(name);
+            _popups.Remove(name);
         }
 
         /// <summary>
@@ -57,31 +71,22 @@ namespace Modules.SimplePopupManager.Services
         /// </summary>
         /// <param name="name">The name of the popup to load.</param>
         /// <param name="param">The parameters to initialize the popup with.</param>
-        private async Task LoadPopup(string name, object param)
+        private async UniTask LoadPopup(string name, object param)
         {
-            AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(name);
-            await handle.Task;
+            var popupObject = await _assetProviderService.LoadAssetAsync<GameObject>(name);
 
-            if (handle.Status == AsyncOperationStatus.Succeeded)
+            popupObject.SetActive(false);
+            var popupComponent = popupObject.GetComponent<IPopup>();
+
+            if (popupComponent != null)
             {
-                GameObject popupObject = handle.Result;
-
-                popupObject.SetActive(false);
-                IPopupInitializationService[] popupInitComponents = popupObject.GetComponents<IPopupInitializationService>();
-
-                foreach (IPopupInitializationService component in popupInitComponents)
-                {
-                    await component.Init(param);
-                }
-
-                popupObject.SetActive(true);
-
-                m_Popups.Add(name, popupObject);
+                await popupComponent.Init(param);
+                popupComponent.OnCloseButtonClick += ClosePopup;
             }
-            else
-            {
-                Debug.LogError($"Failed to load Popup with name {name}");
-            }
+
+            popupObject.SetActive(true);
+
+            _popups.Add(name, popupObject);
         }
     }
 }

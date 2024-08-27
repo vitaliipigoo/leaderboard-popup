@@ -1,4 +1,5 @@
 using Modules.SimplePopupManager.Services;
+using Services;
 using Services.AssetProviders;
 using Zenject;
 
@@ -17,6 +18,7 @@ namespace Installers
             Container.Bind<IAssetProviderService>().To<AssetProviderService>().AsSingle();
             Container.Bind<IPopupManagerService>().To<PopupManagerService>().AsSingle().NonLazy();
             Container.Bind<IPopupInitializationService>().To<PopupInitializationService>().AsSingle().NonLazy();
+            Container.Bind<ILeaderboardDataService>().To<LeaderboardDataService>().AsSingle().NonLazy();
         }
     }
 }

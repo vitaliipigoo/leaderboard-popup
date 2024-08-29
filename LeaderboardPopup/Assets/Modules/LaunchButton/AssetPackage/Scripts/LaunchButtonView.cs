@@ -1,5 +1,6 @@
 using System;
 using Constants;
+using Modules.LeaderboardPopup.AssetPackage.Scripts;
 using Services;
 using SimplePopupManager;
 using UnityEngine;
@@ -42,7 +43,8 @@ namespace Modules.LaunchButton.AssetPackage.Scripts
 
         private void OnLaunchClick()
         {
-            _popupManagerService.OpenPopup(PopupConstants.LeaderboardPopup, _leaderboardDataService.LeaderboardData);
+            _popupManagerService.OpenPopup<LeaderboardPopupView>(
+                PopupConstants.LeaderboardPopup, _leaderboardDataService.LeaderboardData);
         }
     }
 }

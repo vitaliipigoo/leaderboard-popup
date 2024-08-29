@@ -9,6 +9,9 @@ namespace Common
 {
     public class Startup : MonoBehaviour
     {
+        private const string Canvas = "Canvas";
+        private const string LaunchButton = "LaunchButton";
+        
         private IInjectedPrefabsService _injectedPrefabsService;
         private IAssetProviderService _assetProviderService;
         private IPopupManagerService _popupManagerService;
@@ -39,7 +42,7 @@ namespace Common
 
         private async UniTask InstantiatePopupsCanvas()
         {
-            var popupObject = await _assetProviderService.LoadAssetAsync<GameObject>("Canvas");
+            var popupObject = await _assetProviderService.LoadAssetAsync<GameObject>(Canvas);
             var popupCanvas = Instantiate(popupObject);
             
             _popupManagerService.SetPopupsRootCanvas(popupCanvas.transform);
@@ -48,8 +51,8 @@ namespace Common
 
         private async UniTask InstantiateLaunchButton()
         {
-            var launchBtnObject = await _assetProviderService.LoadAssetAsync<GameObject>("LaunchButton");
-            var launchButton = _injectedPrefabsService.InstantiatePrefab(launchBtnObject, _popupCanvas);
+            var launchBtnObject = await _assetProviderService.LoadAssetAsync<GameObject>(LaunchButton);
+            _injectedPrefabsService.InstantiatePrefab(launchBtnObject, _popupCanvas);
         }
     }
 }

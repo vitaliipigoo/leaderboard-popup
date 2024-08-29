@@ -37,7 +37,7 @@ namespace SimplePopupManager
         /// </summary>
         /// <param name="name">The name of the popup to open.</param>
         /// <param name="param">The parameters to initialize the popup with.</param>
-        public async void OpenPopup(string name, object param)
+        public async void OpenPopup<T>(string name, object param) where T : IPopup
         {
             if (_popups.ContainsKey(name))
             {
@@ -45,7 +45,7 @@ namespace SimplePopupManager
                 return;
             }
 
-            await LoadPopup(name, param);
+            await LoadPopup<T>(name, param);
         }
 
         /// <summary>
@@ -73,10 +73,11 @@ namespace SimplePopupManager
         /// </summary>
         /// <param name="name">The name of the popup to load.</param>
         /// <param name="param">The parameters to initialize the popup with.</param>
-        private async UniTask LoadPopup(string name, object param)
+        private async UniTask LoadPopup<T>(string name, object param) where T : IPopup
         {
             var popupObject = await _assetProviderService.LoadAssetAsync<GameObject>(name);
-            _injectedPrefabsService.InstantiatePrefab(popupObject, _popupsCanvas);
+            var popupPrefab = _injectedPrefabsService.InstantiatePrefab(popupObject, _popupsCanvas);
+            _injectedPrefabsService.Inject(popupObject.GetComponent<T>());
 
             popupObject.SetActive(false);
             var popupComponent = popupObject.GetComponent<IPopup>();

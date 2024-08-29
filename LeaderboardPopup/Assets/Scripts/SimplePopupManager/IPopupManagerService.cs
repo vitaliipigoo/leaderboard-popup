@@ -15,7 +15,7 @@ namespace SimplePopupManager
         /// </summary>
         /// <param name="name">The name of the popup to open.</param>
         /// <param name="param">The parameters to initialize the popup with.</param>
-        void OpenPopup(string name, object param);
+        void OpenPopup<T>(string name, object param) where T : IPopup;
 
         /// <summary>
         ///     Closes a popup by its name.

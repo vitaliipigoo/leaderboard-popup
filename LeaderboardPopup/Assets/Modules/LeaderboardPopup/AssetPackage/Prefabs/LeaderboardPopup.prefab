@@ -170,7 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f639a5f10fdb4fee963942253905db0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contentParent: {fileID: 174121818608811876}
+  contentTransform: {fileID: 174121818608811876}
   closeButton: {fileID: 2813054887036505426}
   itemReference: {fileID: 5635123681985219959, guid: 5dff28fc0d9e249c6965336fb7e488ff, type: 3}
   items:
@@ -855,6 +855,7 @@ GameObject:
   m_Component:
   - component: {fileID: 174121818608811876}
   - component: {fileID: 694476171624063984}
+  - component: {fileID: 9194720962252154332}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -911,6 +912,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &9194720962252154332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8393728542447654086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1001 &960804150546369089
 PrefabInstance:
   m_ObjectHideFlags: 0

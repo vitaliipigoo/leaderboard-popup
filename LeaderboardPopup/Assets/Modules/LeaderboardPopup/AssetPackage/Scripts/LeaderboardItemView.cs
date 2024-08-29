@@ -43,7 +43,7 @@ namespace Modules.LeaderboardPopup.AssetPackage.Scripts
         private Sprite ConvertTextureToSprite(Texture2D texture)
         {
             Rect rect = new Rect(0, 0, texture.width, texture.height);
-            Vector2 pivot = new Vector2(0.5f, 0.5f); // Центр спрайту
+            Vector2 pivot = new Vector2(0.5f, 0.5f);
 
             return Sprite.Create(texture, rect, pivot);
         }

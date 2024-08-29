@@ -47,6 +47,7 @@ namespace Common
             
             _popupManagerService.SetPopupsRootCanvas(popupCanvas.transform);
             _popupCanvas = popupCanvas.transform;
+            DontDestroyOnLoad(popupCanvas);
         }
 
         private async UniTask InstantiateLaunchButton()

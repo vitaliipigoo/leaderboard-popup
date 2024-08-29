@@ -77,20 +77,17 @@ namespace SimplePopupManager
         {
             var popupObject = await _assetProviderService.LoadAssetAsync<GameObject>(name);
             var popupPrefab = _injectedPrefabsService.InstantiatePrefab(popupObject, _popupsCanvas);
-            _injectedPrefabsService.Inject(popupObject.GetComponent<T>());
+            _injectedPrefabsService.Inject(popupPrefab.GetComponent<T>());
 
-            popupObject.SetActive(false);
-            var popupComponent = popupObject.GetComponent<IPopup>();
+            popupPrefab.SetActive(true);
+            _popups.Add(name, popupPrefab);
+            var popupComponent = popupPrefab.GetComponent<IPopup>();
 
             if (popupComponent != null)
             {
                 await popupComponent.Init(param);
                 popupComponent.OnCloseButtonClick += ClosePopup;
             }
-
-            popupObject.SetActive(true);
-
-            _popups.Add(name, popupObject);
         }
     }
 }

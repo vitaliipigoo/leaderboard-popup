@@ -3,6 +3,8 @@
 //Any use, reproduction, distribution, or release of this code or documentation without the express permission
 //of Sophun Games LTD is strictly prohibited and could be subject to legal action.
 
+using UnityEngine;
+
 namespace SimplePopupManager
 {
     public interface IPopupManagerService
@@ -21,5 +23,7 @@ namespace SimplePopupManager
         /// </summary>
         /// <param name="name">The name of the popup to close.</param>
         void ClosePopup(string name);
+
+        void SetPopupsRootCanvas(Transform instanceTransform);
     }
 }

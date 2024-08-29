@@ -9,7 +9,6 @@ using Services;
 using Services.AssetProviders;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace SimplePopupManager
 {
@@ -20,8 +19,9 @@ namespace SimplePopupManager
     {
         private readonly IInjectedPrefabsService _injectedPrefabsService;
         private readonly IAssetProviderService _assetProviderService;
-
         private readonly Dictionary<string, GameObject> _popups = new();
+
+        private Transform _popupsCanvas;
 
         public PopupManagerService(
             IInjectedPrefabsService injectedPrefabsService, 
@@ -64,6 +64,8 @@ namespace SimplePopupManager
             _popups.Remove(name);
         }
 
+        public void SetPopupsRootCanvas(Transform instanceTransform) => _popupsCanvas = instanceTransform;
+
         /// <summary>
         ///     Loads and instantiates a popup from Unity's addressable system using the provided name.
         ///     Then initializes the popup with the provided parameters.
@@ -74,6 +76,7 @@ namespace SimplePopupManager
         private async UniTask LoadPopup(string name, object param)
         {
             var popupObject = await _assetProviderService.LoadAssetAsync<GameObject>(name);
+            _injectedPrefabsService.InstantiatePrefab(popupObject, _popupsCanvas);
 
             popupObject.SetActive(false);
             var popupComponent = popupObject.GetComponent<IPopup>();

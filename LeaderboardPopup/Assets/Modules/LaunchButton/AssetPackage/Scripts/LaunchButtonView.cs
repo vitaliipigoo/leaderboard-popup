@@ -20,13 +20,13 @@ namespace Modules.LaunchButton.AssetPackage.Scripts
             IPopupManagerService popupManagerService,
             ILeaderboardDataService leaderboardDataService)
         {
-            _launchButton = gameObject.GetComponent<Button>();
             _popupManagerService = popupManagerService;
             _leaderboardDataService = leaderboardDataService;
         }
 
         private void Awake()
         {
+            _launchButton = gameObject.GetComponent<Button>();
             AddButtonsListeners();
         }
 

@@ -27,14 +27,16 @@ namespace Modules.LeaderboardPopup.AssetPackage.Scripts
             closeButton.onClick.RemoveAllListeners();
         }
 
-        public async UniTask Init(object param)
+        public UniTask Init(object param)
         {
             _leaderboardDataModel = param as LeaderboardDataModel;
-            await InstantiateLeaderboardItems();
+            InstantiateLeaderboardItems();
             InitLeaderboardItems();
+            
+            return UniTask.CompletedTask;
         }
 
-        private async UniTask InstantiateLeaderboardItems()
+        private void InstantiateLeaderboardItems()
         {
             var itemsCount = _leaderboardDataModel.Leaderboard.Count - items.Count;
             

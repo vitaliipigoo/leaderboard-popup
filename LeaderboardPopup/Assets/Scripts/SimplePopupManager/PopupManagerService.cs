@@ -61,6 +61,7 @@ namespace SimplePopupManager
             var popup = _popups[name];
             popup.GetComponent<IPopup>().OnCloseButtonClick -= ClosePopup;
             Addressables.ReleaseInstance(popup);
+            Object.Destroy(popup);
             _popups.Remove(name);
         }
 

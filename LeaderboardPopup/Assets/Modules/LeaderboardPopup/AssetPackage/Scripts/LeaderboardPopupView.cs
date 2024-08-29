@@ -1,21 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Constants;
 using Cysharp.Threading.Tasks;
 using Models.Leaderboard;
-using Services;
-using Services.AssetProviders;
 using SimplePopupManager;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 namespace Modules.LeaderboardPopup.AssetPackage.Scripts
 {
     public class LeaderboardPopupView : MonoBehaviour, IPopup
     {
-        private const string Item = "Item";
-        
         public event Action<string> OnCloseButtonClick;
         public string PopupName => PopupConstants.LeaderboardPopup;
 
@@ -24,20 +20,18 @@ namespace Modules.LeaderboardPopup.AssetPackage.Scripts
         [SerializeField] private LeaderboardItemView itemReference;
         [SerializeField] private List<LeaderboardItemView> items;
         
-        private IAssetProviderService _assetProviderService;
-
         private LeaderboardDataModel _leaderboardDataModel;
-        
-        [Inject]
-        public void Construct(IAssetProviderService assetProviderService)
+
+        public void OnDestroy()
         {
-            _assetProviderService = assetProviderService;
+            closeButton.onClick.RemoveAllListeners();
         }
 
         public async UniTask Init(object param)
         {
             _leaderboardDataModel = param as LeaderboardDataModel;
             await InstantiateLeaderboardItems();
+            InitLeaderboardItems();
         }
 
         private async UniTask InstantiateLeaderboardItems()
@@ -51,21 +45,18 @@ namespace Modules.LeaderboardPopup.AssetPackage.Scripts
             }
         }
 
-        public void CloseButtonClick() => OnCloseButtonClick?.Invoke(PopupName);
-        
-        private void Awake()
+        private void InitLeaderboardItems()
         {
-            AddButtonsListeners();
+            var sortedData = _leaderboardDataModel.Leaderboard.OrderByDescending(x => x.Score).ToList();
+
+            for (int i = 0; i < sortedData.Count; i++)
+                items[i].Init(sortedData[i]);
         }
-        
-        private void AddButtonsListeners()
-        {
-            closeButton.onClick.AddListener(CloseButtonClick);
-        }
-        
-        public void OnDestroy()
-        {
-            closeButton.onClick.RemoveAllListeners();
-        }
+
+        private void Awake() => AddButtonsListeners();
+
+        private void AddButtonsListeners() => closeButton.onClick.AddListener(CloseButtonClick);
+
+        private void CloseButtonClick() => OnCloseButtonClick?.Invoke(PopupName);
     }
 }

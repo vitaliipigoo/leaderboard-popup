@@ -12,11 +12,13 @@ namespace Modules.LeaderboardPopup.AssetPackage.Scripts
         public event Action<string> OnCloseButtonClick;
         public string PopupName => PopupConstants.LeaderboardPopup;
 
+        [SerializeField] private Transform contentParent;
         [SerializeField] private Button closeButton;
 
         public UniTask Init(object param)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return default;
         }
 
         public void CloseButtonClick() => OnCloseButtonClick?.Invoke(PopupName);

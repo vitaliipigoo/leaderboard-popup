@@ -1,3 +1,4 @@
+using System;
 using Constants;
 using Services;
 using SimplePopupManager;
@@ -22,10 +23,13 @@ namespace Modules.LaunchButton.AssetPackage.Scripts
             _launchButton = gameObject.GetComponent<Button>();
             _popupManagerService = popupManagerService;
             _leaderboardDataService = leaderboardDataService;
+        }
 
+        private void Awake()
+        {
             AddButtonsListeners();
         }
-        
+
         private void OnDestroy()
         {
             _launchButton.onClick.RemoveAllListeners();

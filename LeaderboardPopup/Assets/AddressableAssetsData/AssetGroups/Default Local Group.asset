@@ -16,7 +16,17 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: ac03d48a2ea0b48fe93ad48871eccf71
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: aaaa4675e9ce14a73b60c373a69d4716
+    m_Address: LeaderboardPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 716bdcbd9add74c8480b2d970f44b267
+    m_Address: Canvas
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 09e8787e6730542f6a6f56ea0543e880, type: 2}
   m_SchemaSet:
